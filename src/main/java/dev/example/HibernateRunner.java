@@ -2,25 +2,31 @@ package dev.example;
 
 
 import dev.example.entity.Birthday;
+import dev.example.entity.PersonalInfo;
 import dev.example.entity.Role;
 import dev.example.entity.User;
 import dev.example.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.time.LocalDate;
 
+@Slf4j
 public class HibernateRunner {
+
     public static void main(String[] args) {
         // TRANSIENT
         User user = User.builder()
-                .username("ivan@mail.ru")
-                .firstname("Ivan")
-                .lastname("Ivanov")
-                .birthDate(new Birthday(LocalDate.of(2000, 01, 01)))
+                .username("ivan99@mail.ru")
+                .personalInfo(PersonalInfo.builder()
+                        .firstname("Ivan")
+                        .lastname("Ivanov")
+                        .birthDate(new Birthday(LocalDate.of(2000, 01, 01)))
+                        .build())
                 .role(Role.ADMIN)
                 .build();
-
+        log.info("User object in transient state: {}", user);
         // TRANSIENT
         try(SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
             try(Session session1 = sessionFactory.openSession()) {
@@ -29,23 +35,11 @@ public class HibernateRunner {
                 //PERSISTENT x session1
                 session1.saveOrUpdate(user);
 
-                user.setFirstname("Ivan");
-                System.out.println(session1.isDirty());
-                session1.get(User.class, "ivan@mail.ru");
-                System.out.println(user);
-
                 session1.getTransaction().commit();
             }
-//
-//            try(Session session2 = sessionFactory.openSession()) {
-//                session2.beginTransaction();
-//
-//                //GET after DELETE PERSISTENT x session2 DETACHED x session1
-//                session2.delete(user);
-//
-//                //REMOVED x session2
-//                session2.getTransaction().commit();
-//            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 }
