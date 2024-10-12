@@ -10,6 +10,23 @@ import java.time.Instant;
 
 public class HibernateRunnerTest {
 
+
+    @Test
+    public void checkH2(){
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var company = Company.builder()
+                        .name("Google")
+                        .build();
+
+
+        session.save(company);
+        session.getTransaction().commit();
+
+    }
+
     @Test
     public void checkManyToMany() throws SQLException {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
