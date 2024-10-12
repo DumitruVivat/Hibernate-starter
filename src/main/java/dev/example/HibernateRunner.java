@@ -1,10 +1,7 @@
 package dev.example;
 
 
-import dev.example.entity.Birthday;
-import dev.example.entity.PersonalInfo;
-import dev.example.entity.Role;
-import dev.example.entity.User;
+import dev.example.entity.*;
 import dev.example.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -16,24 +13,30 @@ import java.time.LocalDate;
 public class HibernateRunner {
 
     public static void main(String[] args) {
-        // TRANSIENT
+        Company company = Company.builder()
+                .name("Mail")
+                .build();
         User user = User.builder()
-                .username("ivan99@mail.ru")
+                .username("ivan2@mail.ru")
                 .personalInfo(PersonalInfo.builder()
                         .firstname("Ivan")
                         .lastname("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(2000, 01, 01)))
                         .build())
                 .role(Role.ADMIN)
+                .company(company)
                 .build();
-        log.info("User object in transient state: {}", user);
-        // TRANSIENT
+        User user2 = null;
         try(SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
             try(Session session1 = sessionFactory.openSession()) {
                 session1.beginTransaction();
 
-                //PERSISTENT x session1
-                session1.saveOrUpdate(user);
+//                session1.saveOrUpdate(company);
+//                session1.saveOrUpdate(user);
+                user2 = session1.get(User.class, 5);
+                System.out.println(user2);
+                System.out.println(user2.getCompany().getName());
+
 
                 session1.getTransaction().commit();
             }
