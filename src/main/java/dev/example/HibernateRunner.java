@@ -14,28 +14,28 @@ public class HibernateRunner {
 
     public static void main(String[] args) {
         Company company = Company.builder()
-                .name("Mail")
+                .name("Goole")
                 .build();
         User user = User.builder()
-                .username("ivan2@mail.ru")
+                .username("andrei@mail.ru")
                 .personalInfo(PersonalInfo.builder()
-                        .firstname("Ivan")
+                        .firstname("Andrei")
                         .lastname("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(2000, 01, 01)))
                         .build())
                 .role(Role.ADMIN)
                 .company(company)
                 .build();
-        User user2 = null;
+//        User user2 = null;
         try(SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
             try(Session session1 = sessionFactory.openSession()) {
                 session1.beginTransaction();
 
 //                session1.saveOrUpdate(company);
-//                session1.saveOrUpdate(user);
-                user2 = session1.get(User.class, 5);
-                System.out.println(user2);
-                System.out.println(user2.getCompany().getName());
+                session1.saveOrUpdate(user);
+//                user2 = session1.get(User.class, 5);
+//                System.out.println(user2);
+//                System.out.println(user2.getCompany().getName());
 
 
                 session1.getTransaction().commit();
