@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.Instant;
 
-public class HibernateRunnerTest {
 
+public class HibernateRunnerTest {
 
     @Test
     public void checkH2(){
@@ -18,7 +18,7 @@ public class HibernateRunnerTest {
         session.beginTransaction();
 
         var company = Company.builder()
-                        .name("Google")
+                        .name("Amazon")
                         .build();
 
 
@@ -35,10 +35,12 @@ public class HibernateRunnerTest {
 
         Chat chat = session.get(Chat.class, 1L);
         User user = session.get(User.class, 10L);
-        UserChat userChat = UserChat.builder()
-                .createdAt(Instant.now())
-                .createdBy("Andrei")
-                .build();
+//        UserChat userChat = UserChat.builder()
+//
+//                .build();
+        UserChat userChat = new UserChat();
+        userChat.setCreatedAt(Instant.now());
+        userChat.setCreatedBy("Andrei");
 
         userChat.setUser(user);
         userChat.setChat(chat);
