@@ -16,5 +16,7 @@
         <mapping class="dev.example.entity.Chat"/>
         <mapping class="dev.example.entity.UserChat"/>
         <mapping class="dev.example.entity.BaseEntity"/>
+        <mapping class="dev.example.entity.Programmer"/>
+        <mapping class="dev.example.entity.Manager"/>
     </session-factory>
 </hibernate-configuration>

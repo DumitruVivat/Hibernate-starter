@@ -6,114 +6,151 @@ import lombok.Cleanup;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.time.Instant;
 
 
 public class HibernateRunnerTest {
 
     @Test
-    public void checkH2(){
+    public void checkInheritance() throws SQLException {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
         session.beginTransaction();
 
-        var company = Company.builder()
-                        .name("Amazon")
-                        .build();
 
+        var company = Company.builder()
+                .name("Yandex")
+                .build();
 
         session.save(company);
+
+        var programmer = Programmer.builder()
+                .username("ivan@gmail.com")
+                .language(Language.JAVA)
+                .company(company)
+                .build();
+
+        session.save(programmer);
+
+        var manager = Manager.builder()
+                .username("petr@gmail.com")
+                .project("Java Enterprise")
+                .company(company)
+                .build();
+
+        session.save(manager);
+
+        session.flush();
+        session.clear();
+
+        var programmer1 = session.get(Programmer.class, 1L);
+        var manager1 = session.get(User.class, 2L);
+
         session.getTransaction().commit();
+    }
+
+    @Test
+    public void checkH2(){
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        var company = Company.builder()
+//                        .name("Amazon")
+//                        .build();
+//
+//
+//        session.save(company);
+//        session.getTransaction().commit();
 
     }
 
     @Test
     public void checkManyToMany() throws SQLException {
-        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        Chat chat = session.get(Chat.class, 1L);
-        User user = session.get(User.class, 10L);
-//        UserChat userChat = UserChat.builder()
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
 //
-//                .build();
-        UserChat userChat = new UserChat();
-        userChat.setCreatedAt(Instant.now());
-        userChat.setCreatedBy("Andrei");
-
-        userChat.setUser(user);
-        userChat.setChat(chat);
-
-        session.save(userChat);
-
-
-        session.getTransaction().commit();
+//        Chat chat = session.get(Chat.class, 1L);
+//        User user = session.get(User.class, 10L);
+////        UserChat userChat = UserChat.builder()
+////
+////                .build();
+//        UserChat userChat = new UserChat();
+//        userChat.setCreatedAt(Instant.now());
+//        userChat.setCreatedBy("Andrei");
+//
+//        userChat.setUser(user);
+//        userChat.setChat(chat);
+//
+//        session.save(userChat);
+//
+//
+//        session.getTransaction().commit();
     }
 
     @Test
     public void checkOneToOne() throws SQLException {
-        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        User user = User.builder()
-                .username("Ivan5@mail.ru")
-                .build();
-        Profile profile = Profile.builder()
-                .language("RU")
-                .street("Stefan 1")
-                .build();
-
-        session.save(user);
-        profile.setUser(user);
-        session.save(profile);
-
-        session.getTransaction().commit();
-    }
-
-    @Test
-    public void checkOrRemove() throws SQLException {
-        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        Company company = session.get(Company.class, 8);
-        company.getUsers().removeIf(user -> user.getId().equals(5));
-
-        session.getTransaction().commit();
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        User user = User.builder()
+//                .username("Ivan5@mail.ru")
+//                .build();
+//        Profile profile = Profile.builder()
+//                .language("RU")
+//                .street("Stefan 1")
+//                .build();
+//
+//        session.save(user);
+//        profile.setUser(user);
+//        session.save(profile);
+//
+//        session.getTransaction().commit();
+//    }
+//
+//    @Test
+//    public void checkOrRemove() throws SQLException {
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        Company company = session.get(Company.class, 8);
+//        company.getUsers().removeIf(user -> user.getId().equals(5));
+//
+//        session.getTransaction().commit();
     }
 
     @Test
     public void addNewUserAndCompany() throws SQLException {
-        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        Company company = Company.builder()
-                .name("Amazon")
-                .build();
-        User user = User.builder()
-                .username("Ivan3@mail.ru")
-                .build();
-
-        company.addUser(user);
-
-        session.save(company);
-
-        session.getTransaction().commit();
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        Company company = Company.builder()
+//                .name("Amazon")
+//                .build();
+//        User user = User.builder()
+//                .username("Ivan3@mail.ru")
+//                .build();
+//
+//        company.addUser(user);
+//
+//        session.save(company);
+//
+//        session.getTransaction().commit();
     }
 
     @Test
     public void checkOneToMany() throws SQLException {
-        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        var company = session.get(Company.class, 8);
-        System.out.println(company.getUsers());
-
-        session.getTransaction().commit();
+//        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup var session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        var company = session.get(Company.class, 8);
+//        System.out.println(company.getUsers());
+//
+//        session.getTransaction().commit();
     }
 
     @Test
