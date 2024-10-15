@@ -1,6 +1,7 @@
 package dev.example.dao;
 
 import com.querydsl.core.Tuple;
+import dev.example.dto.PaymentFilter;
 import dev.example.entity.Payment;
 import dev.example.entity.User;
 import dev.example.util.HibernateUtil;
@@ -111,7 +112,11 @@ public class UserDaoTest {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Double averagePaymentAmount = userDao.findAveragePaymentAmountByFirstAndLastNames(session, "Bill", "Gates");
+        Double averagePaymentAmount = userDao.findAveragePaymentAmountByFirstAndLastNames(session,
+                PaymentFilter.builder()
+                        .firstName("Bill")
+                        .lastName("Gates")
+                        .build());
         assertThat(averagePaymentAmount).isEqualTo(300.0);
 
         session.getTransaction().commit();
