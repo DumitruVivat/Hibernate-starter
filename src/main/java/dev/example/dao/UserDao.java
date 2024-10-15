@@ -5,7 +5,6 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import dev.example.dto.PaymentFilter;
-import dev.example.dto.QPredicate;
 import dev.example.entity.Payment;
 import dev.example.entity.User;
 import lombok.AccessLevel;
