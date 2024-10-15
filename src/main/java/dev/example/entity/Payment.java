@@ -8,26 +8,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
-@Table(schema = "public")
-public class Profile {
+public class Payment implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(nullable = false)
+    private Integer amount;
 
-    private String street;
-
-    private String language;
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
 }

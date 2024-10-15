@@ -1,18 +1,19 @@
 package dev.example.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "name")
+@ToString(exclude = "userChats")
 @Builder
 @Entity
+@Table(schema = "public")
 public class Chat implements BaseEntity<Long> {
 
     @Id

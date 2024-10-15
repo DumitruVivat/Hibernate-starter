@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "users_chat")
+@Table(name = "users_chat", schema = "public")
 public class UserChat extends AuditableEntity<Long>{
 
     @Id
@@ -20,7 +20,6 @@ public class UserChat extends AuditableEntity<Long>{
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne

@@ -1,5 +1,5 @@
 package dev.example.entity;
 
 public enum Language {
-    JAVA, KOTLIN, PHP, GO, PYTHON
+    JAVA, KOTLIN, GO, PYTHON
 }

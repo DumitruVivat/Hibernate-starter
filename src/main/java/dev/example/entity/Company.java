@@ -3,14 +3,17 @@ package dev.example.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "name ")
+@ToString(exclude = "users")
 @Builder
 @Entity
+@Table(name = "company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

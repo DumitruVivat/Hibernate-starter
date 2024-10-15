@@ -3,27 +3,28 @@ package dev.example.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"company", "profile","userChats"})
+@ToString(exclude = {"company","userChats", "payments"})
 @EqualsAndHashCode(of = "username")
-//@Builder
+@Builder
 @Entity
 @Table(name = "users", schema = "public")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
-public class User {
+public class User implements Comparable<User>, BaseEntity<Long> {
     @Id
-    @GeneratedValue(generator = "user_gen", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-    @Embedded
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
     private PersonalInfo personalInfo;
+
+    @Column(unique = true)
+    private String username;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -31,10 +32,23 @@ public class User {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Profile profile;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Profile profile;
 
-//    @Builder.Default
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserChat> userChats = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "receiver")
+    private List<Payment> payments = new ArrayList<>();
+
+    @Override
+    public int compareTo(User o) {
+        return username.compareTo(o.username);
+    }
+
+    public String fullName() {
+        return getPersonalInfo().getFirstname() + " " + getPersonalInfo().getLastname();
+    }
 }
