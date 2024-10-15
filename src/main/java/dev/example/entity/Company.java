@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "company")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Users")
 
 public class Company {
     @Id
